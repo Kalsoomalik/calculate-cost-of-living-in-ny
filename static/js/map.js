@@ -23,6 +23,7 @@ const fetcher = (url) => {
             // console.log(f);
             zillow.forEach((z, i) => {
               if (f.properties.neighborhood == zillow[i][1]) {
+                zillow[i][4] = parseInt(zillow[i][4], 10);
                 f.properties.zillow = zillow[i][4];
                 // console.log(f.properties);
                 // console.log(f);
@@ -55,40 +56,33 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(map);
 
 var geoJson = Carlos;
+var userinputtest = 3000
 
-// Function that will determine the color of a neighborhood based on the borough it belongs to
-function chooseColor(borough) {
-  switch (borough) {
-  case "Brooklyn":
-    return "yellow";
-  case "Bronx":
-    return "red";
-  case "Manhattan":
-    return "orange";
-  case "Queens":
-    return "green";
-  case "Staten Island":
-    return "purple";
-  default:
-    return "black";
-  }
-}
-
-// Grabbing our GeoJSON data..
-// Creating a geoJSON layer with the retrieved data
-// fetch('./')
 
   L.geoJson(geoJson, {
-    // Style each feature (in this case a neighborhood)
-    style: function(feature) {
-      return {
-        color: "white",
-        // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
-        fillColor: chooseColor(feature.properties.borough),
-        fillOpacity: 0.5,
-        weight: 1.5
+   
+    style(feature) {
+     
+      if (userinputtest >= feature.properties.zillow) {
+          return {
+              weight: 2,
+              opacity: 1,
+              color: 'white',
+              dashArray: '3',
+              fillOpacity: 0.3,
+              fillColor: '#0eaa00'
+          };
+      } else {
+          return {
+              weight: 2,
+              opacity: 1,
+              color: 'white',
+              dashArray: '3',
+              fillOpacity: 0.3,
+              fillColor: '#666666'
+          };
       };
-    },
+  },
     // Called on each feature
     onEachFeature: function(feature, layer) {
       // Set mouse events to change map styling
@@ -117,5 +111,5 @@ function chooseColor(borough) {
 
     }
   }).addTo(map);
+},3000);
 
-},2000);
